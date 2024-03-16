@@ -62,10 +62,6 @@ if st.button("Submit"):
             except Exception as e:
                 st.error(f"An error occurred: {e}")
                 st.stop()
-            phone_numbers = sheet.col_values(3)  # Assuming phone numbers are in the third column
-            if phone in phone_numbers:
-                st.error("This phone number already exists in the database.")
-                st.stop()
             row_data = [str(datetime.datetime.now()), name, phone, selected_class, ", ".join(selected_subjects), message]
             sheet.append_row(row_data)
 
