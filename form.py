@@ -6,14 +6,6 @@ import smtplib
 import datetime
 from email.mime.text import MIMEText
 
-
-# Authenticate with Google Sheets API using the credentials
-
-
-# post_url = "https://formsubmit.co/deeptigulati79@gmail.com"
-
-
-
 st.image("studyshala.png")
 
 st.title("Welcome to Studyshala!")
@@ -48,25 +40,28 @@ message = st.text_area("Optional Message")
 
 # Handle form submission
 if st.button("Submit"):
-    client = gspread.service_account_from_dict({
-    "type": st.secrets["connections"]["gsheets"]["type"],
-    "project_id": st.secrets["connections"]["gsheets"]["project_id"],
-    "private_key_id": st.secrets["connections"]["gsheets"]["private_key_id"],
-    "private_key": st.secrets["connections"]["gsheets"]["private_key"],
-    "client_email": st.secrets["connections"]["gsheets"]["client_email"],
-    "client_id": st.secrets["connections"]["gsheets"]["client_id"],
-    "auth_uri": st.secrets["connections"]["gsheets"]["auth_uri"],
-    "token_uri": st.secrets["connections"]["gsheets"]["token_uri"],
-    "auth_provider_x509_cert_url": st.secrets["connections"]["gsheets"]["auth_provider_x509_cert_url"],
-    "client_x509_cert_url": st.secrets["connections"]["gsheets"]["client_x509_cert_url"]
-    })
-
-    # Open the Google Sheet
-    spreadsheet_key = st.secrets["connections"]["gsheets"]["spreadsheet"]
-    worksheet_index = int(st.secrets["connections"]["gsheets"]["worksheet"])
-    sheet = client.open_by_key(spreadsheet_key).get_worksheet(worksheet_index)
+   
     # Check if all required fields are filled
     if name.strip() and phone.strip() and len(phone.strip()) == 10 and selected_class and selected_subjects:
+        try:
+            client = gspread.service_account_from_dict({
+            "type": st.secrets["connections"]["gsheets"]["type"],
+            "project_id": st.secrets["connections"]["gsheets"]["project_id"],
+            "private_key_id": st.secrets["connections"]["gsheets"]["private_key_id"],
+            "private_key": st.secrets["connections"]["gsheets"]["private_key"],
+            "client_email": st.secrets["connections"]["gsheets"]["client_email"],
+            "client_id": st.secrets["connections"]["gsheets"]["client_id"],
+            "auth_uri": st.secrets["connections"]["gsheets"]["auth_uri"],
+            "token_uri": st.secrets["connections"]["gsheets"]["token_uri"],
+            "auth_provider_x509_cert_url": st.secrets["connections"]["gsheets"]["auth_provider_x509_cert_url"],
+            "client_x509_cert_url": st.secrets["connections"]["gsheets"]["client_x509_cert_url"]
+            })
+            spreadsheet_key = st.secrets["connections"]["gsheets"]["spreadsheet"]
+            worksheet_index = int(st.secrets["connections"]["gsheets"]["worksheet"])
+            sheet = client.open_by_key(spreadsheet_key).get_worksheet(worksheet_index)
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+            st.stop()
         phone_numbers = sheet.col_values(3)  # Assuming phone numbers are in the third column
         if phone in phone_numbers:
             st.error("This phone number already exists in the database.")
@@ -89,8 +84,6 @@ if st.button("Submit"):
             st.success("Form submitted successfully!")
         except Exception as e:
             st.error(f"An error occurred")
-        # else:
-        #     st.error("Something went wrong. Please try again.")
     else:
         if len(phone.strip()) != 10:
             st.error("Please enter a 10-digit phone number.")
