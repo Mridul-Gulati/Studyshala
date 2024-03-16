@@ -6,25 +6,24 @@ import smtplib
 import datetime
 from email.mime.text import MIMEText
 
-secrets = toml.load("secrets.toml")
 
 # Authenticate with Google Sheets API using the credentials
 client = gspread.service_account_from_dict({
-    "type": secrets["connections"]["gsheets"]["type"],
-    "project_id": secrets["connections"]["gsheets"]["project_id"],
-    "private_key_id": secrets["connections"]["gsheets"]["private_key_id"],
-    "private_key": secrets["connections"]["gsheets"]["private_key"],
-    "client_email": secrets["connections"]["gsheets"]["client_email"],
-    "client_id": secrets["connections"]["gsheets"]["client_id"],
-    "auth_uri": secrets["connections"]["gsheets"]["auth_uri"],
-    "token_uri": secrets["connections"]["gsheets"]["token_uri"],
-    "auth_provider_x509_cert_url": secrets["connections"]["gsheets"]["auth_provider_x509_cert_url"],
-    "client_x509_cert_url": secrets["connections"]["gsheets"]["client_x509_cert_url"]
+    "type": st.secrets["connections"]["gsheets"]["type"],
+    "project_id": st.secrets["connections"]["gsheets"]["project_id"],
+    "private_key_id": st.secrets["connections"]["gsheets"]["private_key_id"],
+    "private_key": st.secrets["connections"]["gsheets"]["private_key"],
+    "client_email": st.secrets["connections"]["gsheets"]["client_email"],
+    "client_id": st.secrets["connections"]["gsheets"]["client_id"],
+    "auth_uri": st.secrets["connections"]["gsheets"]["auth_uri"],
+    "token_uri": st.secrets["connections"]["gsheets"]["token_uri"],
+    "auth_provider_x509_cert_url": st.secrets["connections"]["gsheets"]["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": st.secrets["connections"]["gsheets"]["client_x509_cert_url"]
 })
 
 # Open the Google Sheet
-spreadsheet_key = secrets["connections"]["gsheets"]["spreadsheet"]
-worksheet_index = int(secrets["connections"]["gsheets"]["worksheet"])
+spreadsheet_key = st.secrets["connections"]["gsheets"]["spreadsheet"]
+worksheet_index = int(st.secrets["connections"]["gsheets"]["worksheet"])
 sheet = client.open_by_key(spreadsheet_key).get_worksheet(worksheet_index)
 
 # post_url = "https://formsubmit.co/deeptigulati79@gmail.com"
