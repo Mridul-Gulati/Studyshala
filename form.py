@@ -12,9 +12,10 @@ st.title("Welcome to Studyshala!")
 name = st.text_input("Student's name")
 phone = st.text_input("Your Phone Number")
 
-# Select class
-selected_class = st.selectbox("Select your class", [None, "Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"])
+class_options = [None, "Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"]
+selected_class = st.selectbox("Select your class", class_options)
 
+    
 # Dictionary containing subjects for each class
 class_subjects = {
     "Class 1": ["All Subjects (English + Hindi + Maths + EVS)"],
@@ -31,8 +32,9 @@ class_subjects = {
     "Class 12": ["IP + Project work"],
 }
 
-# Render selectbox for subjects based on selected class
-if selected_class:
+if selected_class in ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"]:
+    selected_subjects = st.multiselect("Select your subjects", class_subjects[selected_class], default=["All Subjects (English + Hindi + Maths + EVS)"])
+elif selected_class:
     selected_subjects = st.multiselect("Select your subjects", class_subjects[selected_class])
 
     # Text area for optional message
