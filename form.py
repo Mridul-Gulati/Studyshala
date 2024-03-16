@@ -85,7 +85,7 @@ if st.button("Submit"):
             except Exception as e:
                 st.error(f"An error occurred")
         else:
-            if len(phone.strip()) != 10:
+            if len(phone.strip()) != 10 or not phone.isdigit():
                 st.error("Please enter a 10-digit phone number.")
             else:
                 st.error("Please fill in all the required fields.")
