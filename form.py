@@ -40,55 +40,55 @@ message = st.text_area("Optional Message")
 
 # Handle form submission
 if st.button("Submit"):
-   
+    with st.spinner("Submitting..."):
     # Check if all required fields are filled
-    if name.strip() and phone.strip() and len(phone.strip()) == 10 and selected_class and selected_subjects:
-        try:
-            client = gspread.service_account_from_dict({
-            "type": st.secrets["connections"]["gsheets"]["type"],
-            "project_id": st.secrets["connections"]["gsheets"]["project_id"],
-            "private_key_id": st.secrets["connections"]["gsheets"]["private_key_id"],
-            "private_key": st.secrets["connections"]["gsheets"]["private_key"],
-            "client_email": st.secrets["connections"]["gsheets"]["client_email"],
-            "client_id": st.secrets["connections"]["gsheets"]["client_id"],
-            "auth_uri": st.secrets["connections"]["gsheets"]["auth_uri"],
-            "token_uri": st.secrets["connections"]["gsheets"]["token_uri"],
-            "auth_provider_x509_cert_url": st.secrets["connections"]["gsheets"]["auth_provider_x509_cert_url"],
-            "client_x509_cert_url": st.secrets["connections"]["gsheets"]["client_x509_cert_url"]
-            })
-            spreadsheet_key = st.secrets["connections"]["gsheets"]["spreadsheet"]
-            worksheet_index = int(st.secrets["connections"]["gsheets"]["worksheet"])
-            sheet = client.open_by_key(spreadsheet_key).get_worksheet(worksheet_index)
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-            st.stop()
-        phone_numbers = sheet.col_values(3)  # Assuming phone numbers are in the third column
-        if phone in phone_numbers:
-            st.error("This phone number already exists in the database.")
-            st.stop()
-        row_data = [str(datetime.datetime.now()), name, phone, selected_class, ", ".join(selected_subjects), message]
-        sheet.append_row(row_data)
+        if name.strip() and phone.strip() and len(phone.strip()) == 10 and selected_class and selected_subjects:
+            try:
+                client = gspread.service_account_from_dict({
+                "type": st.secrets["connections"]["gsheets"]["type"],
+                "project_id": st.secrets["connections"]["gsheets"]["project_id"],
+                "private_key_id": st.secrets["connections"]["gsheets"]["private_key_id"],
+                "private_key": st.secrets["connections"]["gsheets"]["private_key"],
+                "client_email": st.secrets["connections"]["gsheets"]["client_email"],
+                "client_id": st.secrets["connections"]["gsheets"]["client_id"],
+                "auth_uri": st.secrets["connections"]["gsheets"]["auth_uri"],
+                "token_uri": st.secrets["connections"]["gsheets"]["token_uri"],
+                "auth_provider_x509_cert_url": st.secrets["connections"]["gsheets"]["auth_provider_x509_cert_url"],
+                "client_x509_cert_url": st.secrets["connections"]["gsheets"]["client_x509_cert_url"]
+                })
+                spreadsheet_key = st.secrets["connections"]["gsheets"]["spreadsheet"]
+                worksheet_index = int(st.secrets["connections"]["gsheets"]["worksheet"])
+                sheet = client.open_by_key(spreadsheet_key).get_worksheet(worksheet_index)
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+                st.stop()
+            phone_numbers = sheet.col_values(3)  # Assuming phone numbers are in the third column
+            if phone in phone_numbers:
+                st.error("This phone number already exists in the database.")
+                st.stop()
+            row_data = [str(datetime.datetime.now()), name, phone, selected_class, ", ".join(selected_subjects), message]
+            sheet.append_row(row_data)
 
-        try:
-            body = f"Name: {name}\nPhone: {phone}\nClass: {selected_class}\nSubjects: {', '.join(selected_subjects)}\nMessage: {message}" 
-            msg = MIMEText(body)
-            msg['From'] = "studyshala79@gmail.com"
-            msg['To'] = "deeptigulati79@gmail.com"
-            msg['Subject'] = "Form submitted successfully!"
+            try:
+                body = f"Name: {name}\nPhone: {phone}\nClass: {selected_class}\nSubjects: {', '.join(selected_subjects)}\nMessage: {message}" 
+                msg = MIMEText(body)
+                msg['From'] = "studyshala79@gmail.com"
+                msg['To'] = "deeptigulati79@gmail.com"
+                msg['Subject'] = "Form submitted successfully!"
 
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login("studyshala79@gmail.com", "enas kyza rypc ygpg" )
-            server.sendmail("studyshala79@gmail.com", "deeptigulati79@gmail.com", msg.as_string())
-            server.quit()
-            st.success("Form submitted successfully!")
-        except Exception as e:
-            st.error(f"An error occurred")
-    else:
-        if len(phone.strip()) != 10:
-            st.error("Please enter a 10-digit phone number.")
+                server = smtplib.SMTP('smtp.gmail.com', 587)
+                server.starttls()
+                server.login("studyshala79@gmail.com", "enas kyza rypc ygpg" )
+                server.sendmail("studyshala79@gmail.com", "deeptigulati79@gmail.com", msg.as_string())
+                server.quit()
+                st.success("Form submitted successfully!")
+            except Exception as e:
+                st.error(f"An error occurred")
         else:
-            st.error("Please fill in all the required fields.")
+            if len(phone.strip()) != 10:
+                st.error("Please enter a 10-digit phone number.")
+            else:
+                st.error("Please fill in all the required fields.")
 
 
 # Get the current year
