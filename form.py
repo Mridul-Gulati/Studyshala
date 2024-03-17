@@ -5,6 +5,7 @@ import toml
 import smtplib
 import datetime
 from email.mime.text import MIMEText
+import streamlit.components.v1 as components
 
 st.image("studyshala.png")
 
@@ -100,5 +101,9 @@ footer = f"""
 </div>
 """
 
+home = """<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1749.7819055980215!2d77.13587193865565!3d28.70269189390665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d03d758d01921%3A0x73ffd1a27ff23462!2sGD-193%2C%20GD%20Block%2C%20Dakshini%20Pitampura%2C%20Pitampura%2C%20Delhi%2C%20110034!5e0!3m2!1sen!2sin!4v1710650733053!5m2!1sen!2sin" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"""
+
 # Render footer
+st.subheader("Our Location")
+st.markdown(home, unsafe_allow_html=True)
 st.markdown(footer, unsafe_allow_html=True)
