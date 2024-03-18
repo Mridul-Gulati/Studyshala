@@ -72,13 +72,13 @@ if st.button("Submit"):
                 body = f"Name: {name}\nPhone: {phone}\nClass: {selected_class}\nSubjects: {', '.join(selected_subjects)}\nMessage: {message}" 
                 msg = MIMEText(body)
                 msg['From'] = "studyshala79@gmail.com"
-                msg['To'] = "deeptigulati79@gmail.com"
+                msg['To'] = "studyshala79@gmail.com"
                 msg['Subject'] = "Form submitted successfully!"
 
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.starttls()
                 server.login("studyshala79@gmail.com", "enas kyza rypc ygpg" )
-                server.sendmail("studyshala79@gmail.com", "deeptigulati79@gmail.com", msg.as_string())
+                server.sendmail("studyshala79@gmail.com", "studyshala79@gmail.com", msg.as_string())
                 server.quit()
                 st.success("Form submitted successfully!")
             except Exception as e:
